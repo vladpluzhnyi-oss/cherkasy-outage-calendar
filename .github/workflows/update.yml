@@ -1,0 +1,32 @@
+name: Update outage calendar
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate calendar
+        run: python generate_calendar.py
+
+      - name: Publish calendar
+        run: |
+          git config user.name "Outage Calendar Bot"
+          git config user.email "actions@github.com"
+          git add docs/calendar.ics
+          git diff --cached --quiet || git commit -m "Update outage calendar"
+          git push
