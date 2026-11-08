@@ -64,6 +64,8 @@ if parts[1] in ("24:00", "24:00:00"):
     end = datetime.combine(
         schedule_day + timedelta(days=1), time.min, TZ
     )
+else:if parts[1] in ("24:00", "24:00:00"):
+    end_time = time.min
 else:
     end_time = time.fromisoformat(parts[1])
     end = datetime.combine(schedule_day, end_time, TZ)
