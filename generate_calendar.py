@@ -58,10 +58,15 @@ def main():
                 continue
 
             start_time = time.fromisoformat(parts[0])
-            end_time = time.fromisoformat(parts[1])
+start = datetime.combine(schedule_day, start_time, TZ)
 
-            start = datetime.combine(schedule_day, start_time, TZ)
-            end = datetime.combine(schedule_day, end_time, TZ)
+if parts[1] in ("24:00", "24:00:00"):
+    end = datetime.combine(
+        schedule_day + timedelta(days=1), time.min, TZ
+    )
+else:
+    end_time = time.fromisoformat(parts[1])
+    end = datetime.combine(schedule_day, end_time, TZ)
 
             if end <= start:
                 end += timedelta(days=1)
